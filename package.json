@@ -1,0 +1,15 @@
+{
+  "name": "node-norm-mongo",
+  "version": "1.0.0",
+  "description": "Norm mongo adapter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ganesha <reekoheek@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "mongodb": "^2.2.29",
+    "node-norm": "^0.3.2"
+  }
+}
