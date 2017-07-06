@@ -1,6 +1,6 @@
 {
   "name": "node-norm-mongo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Norm mongo adapter",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "mongodb": "^2.2.29",
-    "node-norm": "^0.3.3"
+    "node-norm": "^0.3.5"
   },
   "repository": {
     "type": "git",

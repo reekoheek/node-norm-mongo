@@ -36,6 +36,10 @@ class Mongo extends Connection {
       return { _id: ObjectId(_criteria) };
     }
 
+    if (_criteria.id) {
+      return { _id: ObjectId(_criteria.id) };
+    }
+
     return _criteria;
   }
 
@@ -58,6 +62,7 @@ class Mongo extends Connection {
 
     let results = await cursor.toArray();
     return results.map(row => {
+      row = this.unmarshal(row);
       callback(row);
       return row;
     });
@@ -66,16 +71,25 @@ class Mongo extends Connection {
   async insert (query, callback) {
     return new Promise(async (resolve, reject) => {
       let col = await this.getCollection(query);
-      col.insertMany(query._inserts, function(err, r) {
+      col.insertMany(query._inserts, (err, r) => {
         if (err) {
           return reject(err);
         }
 
-        r.ops.forEach(op => callback(op));
+        r.ops.forEach(row => {
+          row = this.unmarshal(row);
+          callback(row);
+        });
 
         resolve(r.insertedCount);
       });
     });
+  }
+
+  unmarshal (row) {
+    row.id = row._id;
+    delete row._id;
+    return row;
   }
 
   async update (query) {
@@ -96,7 +110,6 @@ class Mongo extends Connection {
     return new Promise(async (resolve, reject) => {
       let col = await this.getCollection(query);
       let criteria = this.getCriteria(query);
-      console.log(criteria);
       col.deleteMany(criteria, (err, r) => {
         if (err) {
           return reject(err);
@@ -111,7 +124,6 @@ class Mongo extends Connection {
     return new Promise(async (resolve, reject) => {
       let col = await this.getCollection(query);
       let criteria = this.getCriteria(query);
-      console.log(criteria);
       col.deleteMany(criteria, (err, r) => {
         if (err) {
           return reject(err);
